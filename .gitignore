@@ -7,3 +7,4 @@ coverage/
 embedding-service/venv/
 __pycache__/
 *.pyc
+scripts/test*
