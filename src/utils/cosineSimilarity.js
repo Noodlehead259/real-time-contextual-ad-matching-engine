@@ -1,7 +1,17 @@
 function cosinesimilarity(veca, vecb) {
-    const dot = veca.reduce((sum, a, i) => sum + a * vecb[i], 0)
-    const maga = Math.sqrt(veca.reduce((sum, a) => sum + a * a, 0))
-    const magb = Math.sqrt(vecb.reduce((sum, b) => sum + b * b, 0))
+    let dot = 0
+    let maga = 0, magb = 0
+
+
+    for(let i = 0; i < veca.length; i++){
+        dot += veca[i] * vecb[i]
+
+        maga += veca[i] * veca[i]
+        magb += vecb[i] * vecb[i]
+    }
+
+    maga = Math.sqrt(maga)
+    magb = Math.sqrt(magb)
 
     return dot / (maga * magb)
 }
