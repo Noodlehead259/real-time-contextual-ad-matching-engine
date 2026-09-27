@@ -11,9 +11,9 @@ def health():
 
 @app.post("/embed")
 def embed(data: dict):
-    temp = {}
-    for i in data:
-        text = data[i]
-        embedding = model.encode(text).tolist()
-        temp[i] = embedding
-    return temp
+    ids = list(data.keys())
+    texts = list(data.values())
+
+    embeddings = model.encode(texts).tolist()
+
+    return dict(zip(ids, embeddings))
