@@ -45,3 +45,59 @@ That's why I'm using **embeddings**.
 I convert the page and ad text into numerical vectors that capture their **semantic meaning**.
 
 I can then compare these vectors to measure how semantically similar the page and each ad are, rather than simply comparing individual words.
+
+---
+
+## 2. Current Architecture
+
+The embedding part of the system currently works as a separate Python microservice:
+
+```text
+Node.js / Express
+        |
+        | HTTP
+        v
+Python / FastAPI
+        |
+        v
+SentenceTransformer
+        |
+        v
+NVIDIA RTX 5050 GPU
+        |
+        v
+384-dimensional embeddings
+```
+
+The Python service exposes:
+
+- `GET /health` — checks whether the service is running.
+- `POST /embed` — converts one or multiple pieces of text into embeddings.
+
+The model currently being used is:
+
+```text
+all-MiniLM-L6-v2
+```
+
+It produces a 384-dimensional vector for each input text.
+
+---
+
+## 3. GPU Acceleration
+
+I am running the embedding model on the NVIDIA RTX 5050 Laptop GPU instead of the CPU.
+
+The model is loaded with:
+
+```python
+model = SentenceTransformer("all-MiniLM-L6-v2", device="cuda")
+```
+
+The environment was verified with:
+
+```text
+PyTorch: 2.14.0+cu130
+CUDA available: True
+GPU: NVIDIA GeForce RTX 5050 Laptop GPU
+```
