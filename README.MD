@@ -141,7 +141,7 @@ After generating the page and ad embeddings, I calculate the semantic relevance 
 cosine similarity(page embedding, ad embedding) = relevance score
 ```
 
-ad embeddings are retrived from redis.
+ad embeddings are retrieved from redis.
 
 ---
 
