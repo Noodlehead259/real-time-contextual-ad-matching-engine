@@ -104,7 +104,7 @@ GPU: NVIDIA GeForce RTX 5050 Laptop GPU
 
 ---
 
-## 4. Batched Embedding Inference
+## 4. Batched Embedding Inference and Redis caching
 
 Instead of sending each text to the embedding model separately, I send multiple texts together in a single request.
 
@@ -117,6 +117,20 @@ ad3 ─┼──> SentenceTransformer ──> embeddings
 ad4 ─┤
 ad5 ─┘
 ```
+This reduces the overhead of multiple inference requests and allows the GPU to process multiple inputs together.
+
+### Storing Ad Embeddings in Redis
+
+After generating the embeddings, each ad embedding is stored in Redis using its ad ID as the key.
+
+```text
+Redis
+├── ad:a1 → [384-dimensional embedding]
+├── ad:a2 → [384-dimensional embedding]
+├── ad:a3 → [384-dimensional embedding]
+├── ad:a4 → [384-dimensional embedding]
+└── ad:a5 → [384-dimensional embedding]
+```
 ---
 
 ## 5. Relevance Scoring
@@ -126,6 +140,8 @@ After generating the page and ad embeddings, I calculate the semantic relevance 
 ```text
 cosine similarity(page embedding, ad embedding) = relevance score
 ```
+
+ad embeddings are retrived from redis.
 
 ---
 
