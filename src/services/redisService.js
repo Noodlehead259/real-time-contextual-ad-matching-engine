@@ -15,9 +15,16 @@ async function connectRedis() {
     }
 }
 
-async function setvalue(key, value) {
+async function setvalue(key, value, ttl) {
     await connectRedis()
-    await client.set(key, value)
+
+    if(ttl){
+        await client.set(key, value, {
+            EX: ttl
+        })
+    }else{
+        await client.set(key, value)
+    }
 }
 
 async function getvalue(key) {
